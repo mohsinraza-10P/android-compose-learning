@@ -2,25 +2,21 @@ package com.example.bizcardapp
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -30,6 +26,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -38,9 +35,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,14 +56,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             BizCardAppTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
+                Surface(color = MaterialTheme.colorScheme.background) {
                     CreateBizCard()
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainPreview() {
+    BizCardAppTheme {
+        CreateBizCard()
     }
 }
 
@@ -83,13 +85,14 @@ fun CreateBizCard() {
     ) {
         Card(
             modifier = Modifier.padding(12.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color.White
             ),
         ) {
             Column(
-                verticalArrangement = Arrangement.Top,
+                verticalArrangement = Arrangement.Top, // Default is Top
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 CreateProfileImage()
@@ -108,7 +111,7 @@ fun CreateBizCard() {
                     )
                 }
                 AnimatedVisibility(visible = portfolioVisibleState.value) {
-                    Content()
+                    PortfolioList()
                 }
             }
         }
@@ -148,73 +151,72 @@ private fun CreateProfileImage(modifier: Modifier = Modifier) {
         border = BorderStroke(1.dp, Color.LightGray),
     ) {
         Image(
-            modifier = modifier.size(135.dp),
             painter = painterResource(id = R.drawable.profile_image),
             contentDescription = "Profile image",
         )
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MainPreview() {
-    BizCardAppTheme {
-        CreateBizCard()
-    }
-}
-
-@Composable
-fun Content() {
+fun PortfolioList() {
+    val data = listOf(
+        "Project # 1",
+        "Project # 2",
+        "Project # 3",
+        "Project # 4",
+        "Project # 5",
+        "Project # 6",
+        "Project # 7",
+        "Project # 8",
+        "Project # 9",
+        "Project # 10",
+    )
     Surface(
         modifier = Modifier.padding(8.dp),
         shape = RoundedCornerShape(corner = CornerSize(8.dp)),
         border = BorderStroke(0.5.dp, Color.LightGray),
     ) {
-        Portfolio(
-            data = listOf(
-                "Project # 1",
-                "Project # 2",
-                "Project # 3",
-                "Project # 4",
-                "Project # 5",
-                "Project # 6",
-                "Project # 7",
-                "Project # 8",
-                "Project # 9",
-                "Project # 10",
-            )
-        )
+        LazyColumn {
+            items(data) { item ->
+                PortfolioItem(item)
+            }
+        }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Portfolio(data: List<String>) {
-    LazyColumn {
-        items(data) { item ->
-            Card(
+private fun PortfolioItem(item: String) {
+    val context = LocalContext.current
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp, 12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        ),
+        shape = RectangleShape,
+        onClick = {
+            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+        }
+    ) {
+        Row(modifier = Modifier.padding(12.dp, 8.dp)) {
+            CreateProfileImage(modifier = Modifier.size(80.dp))
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp, 12.dp),
-                shape = RectangleShape,
+                    .padding(8.dp)
+                    .align(alignment = Alignment.CenterVertically)
             ) {
-                Row(modifier = Modifier.padding(12.dp, 8.dp)) {
-                    CreateProfileImage(modifier = Modifier.size(80.dp))
-                    Column(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .align(alignment = Alignment.CenterVertically)
-                    ) {
-                        Text(
-                            text = item,
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        Text(
-                            text = "$item Description!",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                }
+                Text(
+                    text = item,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = "$item Description!",
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
     }
