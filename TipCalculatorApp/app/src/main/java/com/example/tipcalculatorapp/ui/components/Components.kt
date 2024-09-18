@@ -27,12 +27,16 @@ fun InputField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     enabled: Boolean = true,
     singleLine: Boolean = true,
-    leadingIcon: @Composable (() -> Unit)? = null
+    leadingIcon: @Composable (() -> Unit)? = null,
+    onValChange: ((String) -> Unit)? = null
 ) {
     OutlinedTextField(
         modifier = modifier,
         value = valueState.value,
-        onValueChange = { valueState.value = it },
+        onValueChange = {
+            valueState.value = it
+            onValChange?.invoke(it)
+        },
         label = { Text(label) },
         textStyle = MaterialTheme.typography.bodyLarge,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = imeAction),
