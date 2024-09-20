@@ -1,18 +1,17 @@
 package com.example.movieapp.ui.navigation
 
-enum class MovieRoutes {
+enum class AppRoutes {
     Home,
-    Detail;
+    Details;
 
     companion object {
-        fun fromRoute(route: String?) : MovieRoutes {
-            return when(route?.substringBefore("/")) {
+        fun fromRoute(route: String?): AppRoutes {
+            return when (route?.substringBefore("/")) {
                 Home.name -> Home
-                Detail.name -> Detail
+                Details.name -> Details
                 null -> Home
                 else -> throw IllegalArgumentException("Route $route is not recognized")
             }
         }
     }
-
 }
