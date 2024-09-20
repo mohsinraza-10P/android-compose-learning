@@ -83,8 +83,16 @@ private fun App() {
 
 @Composable
 private fun Body(
-    modifier: Modifier = Modifier,
-    moviesList: List<String> = listOf("Movie 1", "Movie 2", "Movie 3", "Movie 4", "Movie 5")
+    modifier: Modifier = Modifier, moviesList: List<String> = listOf(
+        "Avatar",
+        "300",
+        "Harry Potter",
+        "Happiness...",
+        "Cross the Line...",
+        "Be Happy...",
+        "Happy Feet...",
+        "Life"
+    )
 ) {
     val context = LocalContext.current
 
