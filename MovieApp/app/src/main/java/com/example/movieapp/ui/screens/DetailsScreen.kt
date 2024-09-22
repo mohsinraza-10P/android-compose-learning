@@ -23,7 +23,7 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailsScreen(navController: NavController, movie: String?) {
+fun DetailsScreen(navController: NavController, movieId: String?) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = { Text(text = "Movie Details") }, navigationIcon = {
             IconButton(onClick = {
@@ -53,7 +53,7 @@ fun DetailsScreen(navController: NavController, movie: String?) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = movie.toString(),
+                    text = movieId.toString(),
                     style = MaterialTheme.typography.headlineLarge,
                 )
             }

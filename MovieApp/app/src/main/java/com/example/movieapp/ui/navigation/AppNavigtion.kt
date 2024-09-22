@@ -20,13 +20,13 @@ fun AppNavigation() {
                 HomeScreen(navController = navController)
             }
             composable(
-                route = AppRoutes.Details.name + "/{movie}",
+                route = AppRoutes.Details.name + "/{movieId}",
                 arguments = listOf(
-                    navArgument(name = "movie") { type = NavType.StringType }
+                    navArgument(name = "movieId") { type = NavType.StringType }
                 )
             ) { backStackEntry ->
-                val movie = backStackEntry.arguments?.getString("movie")
-                DetailsScreen(navController = navController, movie = movie)
+                val movieId = backStackEntry.arguments?.getString("movieId")
+                DetailsScreen(navController = navController, movieId = movieId)
             }
         }
     )
