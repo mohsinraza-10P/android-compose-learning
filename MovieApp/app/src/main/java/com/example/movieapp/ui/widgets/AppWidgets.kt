@@ -45,14 +45,14 @@ import coil.transform.RoundedCornersTransformation
 import com.example.movieapp.data.models.Movie
 
 @Composable
-fun MovieRow(movie: Movie, onMovieClick: (String) -> Unit = {}) {
+fun MovieRow(movie: Movie, modifier: Modifier = Modifier, allowExpand: Boolean = false, onMovieClick: (String) -> Unit = {}) {
     val context = LocalContext.current
     var expanded by remember {
         mutableStateOf(false)
     }
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(vertical = 16.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(corner = CornerSize(8.dp)),
@@ -149,18 +149,20 @@ fun MovieRow(movie: Movie, onMovieClick: (String) -> Unit = {}) {
                     }
                 }
             }
-            Spacer(modifier = Modifier.width(16.dp)) // Add extra space between text and icon
-            Icon(
-                modifier = Modifier
-                    .size(24.dp)
-                    .align(alignment = Alignment.CenterVertically)
-                    .clickable {
-                        expanded = !expanded
-                    },
-                imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                contentDescription = "${if (expanded) "Collapse" else "Expand"} Icon",
-                tint = Color.DarkGray
-            )
+            if (allowExpand) {
+                Spacer(modifier = Modifier.width(16.dp)) // Add extra space between text and icon
+                Icon(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(alignment = Alignment.CenterVertically)
+                        .clickable {
+                            expanded = !expanded
+                        },
+                    imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                    contentDescription = "${if (expanded) "Collapse" else "Expand"} Icon",
+                    tint = Color.DarkGray
+                )
+            }
         }
     }
 }

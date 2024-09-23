@@ -37,8 +37,8 @@ fun HomeScreen(navController: NavController) {
             )
         }) { innerPadding ->
             Body(
-                navController = navController,
                 modifier = Modifier.padding(innerPadding),
+                navController = navController,
                 moviesList = getMovies()
             )
         }
@@ -47,17 +47,17 @@ fun HomeScreen(navController: NavController) {
 
 @Composable
 private fun Body(
-    navController: NavController,
     modifier: Modifier = Modifier,
+    navController: NavController,
     moviesList: List<Movie>,
 ) {
     Surface(
         modifier = modifier, color = MaterialTheme.colorScheme.background
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
             LazyColumn {
-                items(moviesList) {
-                    MovieRow(it) { movieId ->
+                items(moviesList) { movie ->
+                    MovieRow(movie = movie) { movieId ->
                         Log.d("MovieTAG", "Movie Row Clicked: $movieId")
                         navController.navigate(route = AppRoutes.Details.name + "/$movieId")
                     }
