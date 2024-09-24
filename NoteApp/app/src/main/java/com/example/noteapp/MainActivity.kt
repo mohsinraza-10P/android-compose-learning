@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.noteapp.ui.screens.NoteScreen
 import com.example.noteapp.ui.theme.NoteAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -32,12 +33,7 @@ private fun Preview() {
 private fun App() {
     NoteAppTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Body(modifier = Modifier.padding(innerPadding))
+            NoteScreen(modifier = Modifier.padding(innerPadding))
         }
     }
-}
-
-@Composable
-private fun Body(modifier: Modifier = Modifier) {
-    Text(text = "Note App!")
 }
