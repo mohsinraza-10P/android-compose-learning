@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,23 +14,36 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.noteapp.R
+import com.example.noteapp.data.models.Note
 import com.example.noteapp.ui.components.NoteButton
 import com.example.noteapp.ui.components.NoteInputText
 
 @Composable
-fun NoteScreen(modifier: Modifier = Modifier) {
+fun NoteScreen(
+    modifier: Modifier = Modifier,
+    notes: List<Note> = emptyList(),
+    onAddNote: (Note) -> Unit = {},
+    onRemoveNote: (Note) -> Unit = {}
+) {
+    val title = remember {
+        mutableStateOf("")
+    }
+    val description = remember {
+        mutableStateOf("")
+    }
+
     Column(modifier = modifier) {
         AppBar()
-        Body()
+        Body(title, description, notes, onAddNote, onRemoveNote)
     }
 }
 
@@ -56,28 +70,35 @@ private fun AppBar() {
 }
 
 @Composable
-private fun Body() {
-    var title by remember {
-        mutableStateOf("")
-    }
-    var description by remember {
-        mutableStateOf("")
-    }
+private fun Body(
+    title: MutableState<String>,
+    description: MutableState<String>,
+    notes: List<Note>,
+    onAddNote: (Note) -> Unit,
+    onRemoveNote: (Note) -> Unit
+) {
+    val context = LocalContext.current
 
-    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
         NoteInputText(
             modifier = Modifier.fillMaxWidth(),
-            text = title,
+            text = title.value,
             label = "Title",
             onTextChange = { text ->
                 if (text.all { ch -> ch.isLetter() || ch.isWhitespace() }) {
-                    title = text
+                    title.value = text
                 }
             }
         )
         NoteInputText(
-            modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
-            text = description,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp),
+            text = description.value,
             label = "Add a note",
             onTextChange = {
             }
@@ -85,7 +106,17 @@ private fun Body() {
         NoteButton(
             modifier = Modifier.padding(top = 24.dp),
             text = "Save",
-            onClick = { }
+            onClick = {
+                if (title.value.isNotEmpty() && description.value.isNotEmpty()) {
+                    onAddNote.invoke(Note(
+                        title = title.value,
+                        description = description.value
+                    ))
+                    title.value = ""
+                    description.value = ""
+                    Toast.makeText(context, "Note Added.", Toast.LENGTH_SHORT).show()
+                }
+            }
         )
         HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
     }
