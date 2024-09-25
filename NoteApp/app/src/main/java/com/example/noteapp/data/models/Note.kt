@@ -1,8 +1,8 @@
 package com.example.noteapp.data.models
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import java.util.UUID
 
 data class Note(
@@ -10,4 +10,9 @@ data class Note(
     val title: String,
     val description: String,
     val entryDate: Date = Date()
-)
+) {
+    fun getFormattedEntryDate(pattern: String = "EEE MMM d HH:mm aaa"): String {
+        val format = SimpleDateFormat(pattern, Locale.getDefault())
+        return format.format(entryDate)
+    }
+}
