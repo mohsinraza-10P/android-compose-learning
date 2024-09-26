@@ -1,4 +1,4 @@
-package com.example.noteapp
+package com.example.noteapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,7 +15,9 @@ import com.example.noteapp.data.datasource.NoteDataSource
 import com.example.noteapp.ui.screen.NoteScreen
 import com.example.noteapp.ui.theme.NoteAppTheme
 import com.example.noteapp.ui.viewmodel.NoteViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
