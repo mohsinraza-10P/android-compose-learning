@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             App { innerPadding ->
                 val notes = remember {
-                    mutableListOf<Note>()
+                    mutableStateListOf<Note>()
                 }
                 NoteScreen(
                     modifier = Modifier.padding(innerPadding),
