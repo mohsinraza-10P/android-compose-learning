@@ -3,19 +3,18 @@ package com.example.noteapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.noteapp.data.datasource.NoteDataSource
-import com.example.noteapp.data.model.Note
 import com.example.noteapp.ui.screen.NoteScreen
 import com.example.noteapp.ui.theme.NoteAppTheme
+import com.example.noteapp.ui.viewmodel.NoteViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,14 +22,12 @@ class MainActivity : ComponentActivity() {
         // enableEdgeToEdge()
         setContent {
             App { innerPadding ->
-                val notes = remember {
-                    mutableStateListOf<Note>()
-                }
+                val noteVM: NoteViewModel by viewModels()
                 NoteScreen(
                     modifier = Modifier.padding(innerPadding),
-                    notes = notes,
-                    onAddNote = { notes.add(it) },
-                    onRemoveNote = { notes.remove(it) }
+                    notes = noteVM.getAllNotes(),
+                    onAddNote = { noteVM.addNote(it) },
+                    onRemoveNote = { noteVM.removeNote(it) }
                 )
             }
         }
