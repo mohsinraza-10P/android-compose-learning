@@ -1,4 +1,4 @@
-package com.example.noteapp.data.models
+package com.example.noteapp.data.model
 
 import java.text.SimpleDateFormat
 import java.util.Date

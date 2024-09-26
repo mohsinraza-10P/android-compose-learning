@@ -1,4 +1,4 @@
-package com.example.noteapp.ui.screens
+package com.example.noteapp.ui.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -34,9 +34,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.noteapp.R
-import com.example.noteapp.data.models.Note
-import com.example.noteapp.ui.components.NoteButton
-import com.example.noteapp.ui.components.NoteInputText
+import com.example.noteapp.data.model.Note
+import com.example.noteapp.ui.component.NoteButton
+import com.example.noteapp.ui.component.NoteInputText
 import com.example.noteapp.ui.theme.AppBarBg
 import com.example.noteapp.ui.theme.NoteItemBg
 

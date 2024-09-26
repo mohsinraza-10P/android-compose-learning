@@ -12,9 +12,9 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.noteapp.data.datasource.NotesDataSource
-import com.example.noteapp.data.models.Note
-import com.example.noteapp.ui.screens.NoteScreen
+import com.example.noteapp.data.datasource.NoteDataSource
+import com.example.noteapp.data.model.Note
+import com.example.noteapp.ui.screen.NoteScreen
 import com.example.noteapp.ui.theme.NoteAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -43,7 +43,7 @@ private fun Preview() {
     App { innerPadding ->
         NoteScreen(
             modifier = Modifier.padding(innerPadding),
-            notes = NotesDataSource().loadNotes()
+            notes = NoteDataSource().loadNotes()
         )
     }
 }

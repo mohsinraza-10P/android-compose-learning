@@ -1,8 +1,8 @@
 package com.example.noteapp.data.datasource
 
-import com.example.noteapp.data.models.Note
+import com.example.noteapp.data.model.Note
 
-class NotesDataSource {
+class NoteDataSource {
     fun loadNotes(): List<Note> {
         return listOf(
             Note(title = "A good day", description = "We went on a vacation by the lake"),
