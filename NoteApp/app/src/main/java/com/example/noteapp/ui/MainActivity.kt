@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.noteapp.data.datasource.NoteDataSource
@@ -25,9 +26,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             App { innerPadding ->
                 val noteVM: NoteViewModel by viewModels()
+                val noteList = noteVM.noteList.collectAsState().value
                 NoteScreen(
                     modifier = Modifier.padding(innerPadding),
-                    notes = noteVM.getAllNotes(),
+                    notes = noteList,
                     onAddNote = { noteVM.addNote(it) },
                     onRemoveNote = { noteVM.removeNote(it) }
                 )
