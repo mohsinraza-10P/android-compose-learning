@@ -62,6 +62,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.room.android)
     ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
     implementation(libs.coroutines.play.services)
