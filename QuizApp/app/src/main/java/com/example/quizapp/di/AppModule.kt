@@ -36,5 +36,4 @@ object AppModule {
     fun provideQuestionRepository(apiService: QuestionApiService): QuestionRepository {
         return QuestionRepositoryImpl(apiService)
     }
-
 }
