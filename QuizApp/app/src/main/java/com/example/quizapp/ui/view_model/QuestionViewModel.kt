@@ -17,8 +17,8 @@ class QuestionViewModel @Inject constructor(
     private val repository: QuestionRepository
 ) : ViewModel() {
 
-    private var _questionsState = MutableStateFlow<Response<Question>>(Response.Loading)
-    val questionsState = _questionsState.asStateFlow()
+    private var _questionState = MutableStateFlow<Response<Question>>(Response.Loading)
+    val questionState = _questionState.asStateFlow()
 
     init {
         getAllQuestions()
@@ -27,6 +27,7 @@ class QuestionViewModel @Inject constructor(
     fun getAllQuestions() {
         viewModelScope.launch {
             repository.getAllQuestions().collect { response ->
+                _questionState.value = response
                 when (response) {
                     is Response.Success -> {
                         Log.d("QuestionViewModel", "Success: ${response.data}")
@@ -40,7 +41,6 @@ class QuestionViewModel @Inject constructor(
                         Log.d("QuestionViewModel", "Loading")
                     }
                 }
-                _questionsState.value = response
             }
         }
     }
