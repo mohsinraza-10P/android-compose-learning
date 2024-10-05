@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.quizapp.data.model.Question
 import com.example.quizapp.data.model.QuestionItem
 import com.example.quizapp.data.network.Response
+import com.example.quizapp.ui.screen.QuizContent
 import com.example.quizapp.ui.screen.QuizScreen
 import com.example.quizapp.ui.theme.QuizAppTheme
 import com.example.quizapp.ui.view_model.QuestionViewModel
@@ -28,11 +28,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             QuizAppTheme {
                 App { innerPadding ->
-                    val questionVM: QuestionViewModel by viewModels()
-                    val questionState = questionVM.questionState.collectAsState().value
+                    val viewModel: QuestionViewModel by viewModels()
                     QuizScreen(
                         modifier = Modifier.padding(innerPadding),
-                        questionState = questionState
+                        viewModel = viewModel
                     )
                 }
             }
@@ -51,10 +50,10 @@ private fun Preview() {
             question = "What is your name?"
         )
         val question = Question().apply { add(questionItem) }
-        val questionState = Response.Success(question)
-        QuizScreen(
+        val response = Response.Success(question)
+        QuizContent(
             modifier = Modifier.padding(innerPadding),
-            questionState = questionState
+            response = response
         )
     }
 }
