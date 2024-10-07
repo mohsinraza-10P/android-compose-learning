@@ -3,7 +3,7 @@ package com.example.quizapp.di
 import com.example.quizapp.data.network.QuestionApiService
 import com.example.quizapp.data.repository.QuestionRepository
 import com.example.quizapp.data.repository.QuestionRepositoryImpl
-import com.example.quizapp.util.Constants
+import com.example.quizapp.util.AppConstants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,7 +20,7 @@ object AppModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl(AppConstants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

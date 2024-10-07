@@ -16,6 +16,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -65,7 +68,11 @@ private fun Body(response: Response<Question>) {
         is Response.Success -> {
             // Display the questions
             val questions = response.data
-            QuestionView(questions)
+            if (questions.isNullOrEmpty()) {
+                EmptyView()
+            } else {
+                QuestionView(questions)
+            }
         }
 
         is Response.Error -> {
@@ -87,23 +94,21 @@ private fun LoaderView() {
 }
 
 @Composable
-private fun QuestionView(questions: Question?) {
+private fun QuestionView(questions: Question) {
+    val questionIndex = remember {
+        mutableIntStateOf(0)
+    }
+    val question = questions.getOrNull(questionIndex.intValue)
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            LazyColumn {
-                items(questions ?: emptyList()) {
-                    Column {
-                        Text(
-                            text = it.toString(),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    }
-                }
-            }
+            Text(
+                text = question.toString(),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }
@@ -119,6 +124,20 @@ private fun ErrorView(error: String) {
             text = error,
             style = MaterialTheme.typography.headlineSmall,
             color = Color.Red
+        )
+    }
+}
+
+@Composable
+private fun EmptyView() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            text = "No data found.",
+            style = MaterialTheme.typography.headlineSmall,
         )
     }
 }
