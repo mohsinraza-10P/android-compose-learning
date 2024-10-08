@@ -13,28 +13,14 @@ import com.example.quizapp.ui.theme.lightGray
 
 @Composable
 fun QuestionTracker(currentQuestion: Int, totalQuestions: Int) {
-    Text(text = buildAnnotatedString {
-        withStyle(
-            style = ParagraphStyle(
-                textIndent = TextIndent.None,
-            )
-        ) {
-            withStyle(
-                style = SpanStyle(
-                    color = lightGray, fontWeight = FontWeight.Bold, fontSize = 28.sp
-                )
-            ) {
-                append("Question $currentQuestion/")
-                withStyle(
-                    style = SpanStyle(
-                        color = lightGray, fontWeight = FontWeight.Light, fontSize = 14.sp
-                    )
-                ) {
-                    append("$totalQuestions")
-                }
+    Text(
+        text = buildAnnotatedString {
+            append("Question $currentQuestion/")
+            withStyle(SpanStyle(fontWeight = FontWeight.Light, fontSize = 14.sp)) {
+                append("$totalQuestions")
             }
-        }
-    })
+        }, color = lightGray, fontSize = 28.sp, fontWeight = FontWeight.Bold
+    )
 }
 
 @Composable
