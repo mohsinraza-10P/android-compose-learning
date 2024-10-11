@@ -30,15 +30,15 @@ class QuestionViewModel @Inject constructor(
                 _questionState.value = response
                 when (response) {
                     is Response.Success -> {
-                        Log.d("QuestionViewModel", "Success: ${response.data}")
+                        Log.d("QuizTAG", "Success: ${response.data}")
                     }
 
                     is Response.Error -> {
-                        Log.d("QuestionViewModel", "Error: ${response.exception}")
+                        Log.d("QuizTAG", "Error: ${response.exception}")
                     }
 
                     is Response.Loading -> {
-                        Log.d("QuestionViewModel", "Loading")
+                        Log.d("QuizTAG", "Loading")
                     }
                 }
             }

@@ -43,13 +43,29 @@ class MainActivity : ComponentActivity() {
 @Composable
 private fun Preview() {
     App { innerPadding ->
-        val questionItem = QuestionItem(
+        val questionItem1 = QuestionItem(
             answer = "Mohsin",
             category = null,
-            choices = listOf("Mohsin", "Syed", "Raza"),
+            choices = listOf("Mohsin", "Syed", "Raza", "Naqvi").shuffled(),
             question = "What is your name?"
         )
-        val question = Question().apply { add(questionItem) }
+        val questionItem2 = QuestionItem(
+            answer = "Raza",
+            category = null,
+            choices = listOf("Mohsin", "Syed", "Raza", "Naqvi").shuffled(),
+            question = "What is your name again?"
+        )
+        val questionItem3 = QuestionItem(
+            answer = "Syed",
+            category = null,
+            choices = listOf("Mohsin", "Syed", "Raza", "Naqvi").shuffled(),
+            question = "What is your name again again?"
+        )
+        val question = Question().apply {
+            add(questionItem1)
+            add(questionItem2)
+            add(questionItem3)
+        }
         val response = Response.Success(question)
         QuizContent(
             modifier = Modifier.padding(innerPadding),

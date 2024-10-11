@@ -1,9 +1,14 @@
 package com.example.quizapp.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -12,8 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,8 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.quizapp.R
 import com.example.quizapp.data.model.Question
+import com.example.quizapp.data.model.QuestionItem
 import com.example.quizapp.data.network.Response
+import com.example.quizapp.ui.component.CustomButton
+import com.example.quizapp.ui.component.QuestionChoiceRadioButton
 import com.example.quizapp.ui.component.QuestionDottedDivider
+import com.example.quizapp.ui.component.QuestionText
 import com.example.quizapp.ui.component.QuestionTracker
 import com.example.quizapp.ui.theme.darkPurple
 import com.example.quizapp.ui.theme.lightPurple
@@ -72,7 +83,7 @@ private fun Body(response: Response<Question>) {
             if (questions.isNullOrEmpty()) {
                 EmptyView()
             } else {
-                QuestionView(questions)
+                QuestionView(questions.toMutableList())
             }
         }
 
@@ -95,12 +106,21 @@ private fun LoaderView() {
 }
 
 @Composable
-private fun QuestionView(questions: Question) {
+private fun QuestionView(questions: MutableList<QuestionItem>) {
     val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
     val questionIndex = remember {
         mutableIntStateOf(0)
     }
     val question = questions.getOrNull(questionIndex.intValue)
+    val choices = remember(question) {
+        question?.choices?.toMutableList() ?: emptyList()
+    }
+    val answer = remember(question) {
+        mutableStateOf<Int?>(null)
+    }
+    val correctAnswer = remember(question) {
+        mutableStateOf<Boolean?>(null)
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -108,12 +128,39 @@ private fun QuestionView(questions: Question) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             QuestionTracker(
-                currentQuestion = questionIndex.intValue,
+                currentQuestion = questionIndex.intValue + 1,
                 totalQuestions = questions.size
             )
             QuestionDottedDivider(
                 modifier = Modifier.padding(vertical = 8.dp),
-                pathEffect = pathEffect,
+                pathEffect = pathEffect
+            )
+            QuestionText(
+                modifier = Modifier.fillMaxHeight(fraction = 0.3f),
+                question = question?.question
+            )
+            LazyColumn {
+                itemsIndexed(choices) { index, choice ->
+                    QuestionChoiceRadioButton(
+                        answer,
+                        correctAnswer,
+                        index,
+                        choices,
+                        question,
+                        choice
+                    )
+                }
+            }
+            CustomButton(
+                modifier = Modifier.fillMaxWidth(),
+                buttonText = if (questionIndex.intValue == questions.size - 1) "Done" else "Next",
+                onClick = {
+                    if (questionIndex.intValue < questions.size - 1) {
+                        questionIndex.intValue += 1
+                    } else {
+                        Log.d("QuizTAG", "No more questions.")
+                    }
+                }
             )
         }
     }
